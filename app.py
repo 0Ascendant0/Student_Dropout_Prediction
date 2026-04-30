@@ -1,7 +1,7 @@
 """
 Student Dropout Prediction System
 HCS221 | Great Zimbabwe University
-Clean minimal light theme — white & green, mobile-card layout
+Dark theme — deep charcoal & green, mobile-card layout
 """
 
 import streamlit as st
@@ -18,16 +18,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ── custom CSS — clean light / mobile-card aesthetic ─────────────────────────
+# ── custom CSS — dark theme ───────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* ── global ── */
 html, body, [data-testid="stAppViewContainer"] {
-    background-color: #f0f4f0 !important;
-    color: #1a2e1a !important;
+    background-color: #0e1210 !important;
+    color: #e8f0e8 !important;
     font-family: 'Inter', sans-serif !important;
+}
+
+[data-testid="stApp"],
+[data-testid="stMain"],
+.main,
+.block-container {
+    background-color: #0e1210 !important;
 }
 
 /* centre and constrain like a phone screen */
@@ -42,23 +49,23 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSidebar"] { display: none !important; }
 
 /* ── headings ── */
-h1 { font-size: 20px !important; font-weight: 700 !important; color: #1a2e1a !important; margin-bottom: 2px !important; }
-h2 { font-size: 14px !important; font-weight: 600 !important; color: #2e7d32 !important; letter-spacing: 0.5px; text-transform: uppercase; }
-h3 { font-size: 13px !important; font-weight: 600 !important; color: #388e3c !important; }
+h1 { font-size: 20px !important; font-weight: 700 !important; color: #e8f0e8 !important; margin-bottom: 2px !important; }
+h2 { font-size: 14px !important; font-weight: 600 !important; color: #4caf50 !important; letter-spacing: 0.5px; text-transform: uppercase; }
+h3 { font-size: 13px !important; font-weight: 600 !important; color: #66bb6a !important; }
 
-/* ── card wrapper (use via st.markdown) ── */
+/* ── card wrapper ── */
 .card {
-    background: #ffffff;
+    background: #1a2118;
     border-radius: 16px;
     padding: 16px;
     margin-bottom: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.4);
 }
 
 .section-label {
     font-size: 11px;
     font-weight: 600;
-    color: #81c784;
+    color: #66bb6a;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 10px;
@@ -66,39 +73,51 @@ h3 { font-size: 13px !important; font-weight: 600 !important; color: #388e3c !im
 
 /* ── metric cards ── */
 [data-testid="stMetric"] {
-    background: #ffffff !important;
-    border: 1px solid #e8f5e9 !important;
+    background: #1a2118 !important;
+    border: 1px solid #2a3a28 !important;
     border-top: 3px solid #43a047 !important;
     border-radius: 12px !important;
     padding: 12px 10px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
 }
 [data-testid="stMetricLabel"] {
     font-size: 10px !important;
     font-weight: 600 !important;
-    color: #81c784 !important;
+    color: #66bb6a !important;
     text-transform: uppercase;
     letter-spacing: 0.8px;
 }
 [data-testid="stMetricValue"] {
     font-size: 22px !important;
     font-weight: 700 !important;
-    color: #1b5e20 !important;
+    color: #a5d6a7 !important;
 }
 
 /* ── sliders ── */
 [data-testid="stSlider"] > div > div > div > div {
     background: #43a047 !important;
 }
+[data-testid="stSlider"] label {
+    color: #c8e6c9 !important;
+}
 
 /* ── inputs & selects ── */
 [data-testid="stSelectbox"] > div > div,
 [data-testid="stNumberInput"] > div > div > input {
-    border: 1px solid #c8e6c9 !important;
+    border: 1px solid #2a3a28 !important;
     border-radius: 10px !important;
-    background: #f9fdf9 !important;
-    color: #1a2e1a !important;
+    background: #141c13 !important;
+    color: #e8f0e8 !important;
     font-size: 14px !important;
+}
+[data-testid="stSelectbox"] label,
+[data-testid="stNumberInput"] label {
+    color: #c8e6c9 !important;
+}
+
+/* ── all widget labels ── */
+label, [data-testid="stWidgetLabel"] {
+    color: #c8e6c9 !important;
 }
 
 /* ── primary button ── */
@@ -112,29 +131,32 @@ h3 { font-size: 13px !important; font-weight: 600 !important; color: #388e3c !im
     padding: 14px 0 !important;
     width: 100% !important;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(46,125,50,0.25) !important;
+    box-shadow: 0 2px 10px rgba(46,125,50,0.4) !important;
     transition: background 0.2s !important;
 }
 [data-testid="stButton"] > button[kind="primary"]:hover {
-    background: #1b5e20 !important;
+    background: #388e3c !important;
 }
 
 /* ── secondary button ── */
 [data-testid="stButton"] > button {
-    background: #ffffff !important;
-    border: 1.5px solid #a5d6a7 !important;
+    background: #1a2118 !important;
+    border: 1.5px solid #2e7d32 !important;
     border-radius: 10px !important;
-    color: #2e7d32 !important;
+    color: #66bb6a !important;
     font-weight: 600 !important;
     font-size: 13px !important;
 }
 
 /* ── file uploader ── */
 [data-testid="stFileUploader"] {
-    border: 2px dashed #a5d6a7 !important;
+    border: 2px dashed #2e7d32 !important;
     border-radius: 12px !important;
-    background: #f9fdf9 !important;
+    background: #141c13 !important;
     padding: 10px !important;
+}
+[data-testid="stFileUploader"] * {
+    color: #a5d6a7 !important;
 }
 
 /* ── alerts ── */
@@ -142,51 +164,73 @@ h3 { font-size: 13px !important; font-weight: 600 !important; color: #388e3c !im
     border-radius: 12px !important;
     border-left-width: 4px !important;
     font-size: 14px !important;
+    background: #1a2118 !important;
+    color: #e8f0e8 !important;
 }
 
 /* ── divider ── */
-hr { border-color: #e8f5e9 !important; margin: 12px 0 !important; }
+hr { border-color: #2a3a28 !important; margin: 12px 0 !important; }
 
 /* ── dataframe ── */
 [data-testid="stDataFrame"] {
-    border: 1px solid #e8f5e9 !important;
+    border: 1px solid #2a3a28 !important;
     border-radius: 10px !important;
 }
 
 /* ── tabs ── */
+[data-testid="stTabs"] {
+    background: transparent !important;
+}
 [data-testid="stTabs"] button {
     font-size: 13px !important;
     font-weight: 600 !important;
-    color: #81c784 !important;
+    color: #66bb6a !important;
     border-radius: 0 !important;
     flex: 1 !important;
     text-align: center !important;
+    background: transparent !important;
 }
 [data-testid="stTabs"] button[aria-selected="true"] {
-    color: #2e7d32 !important;
-    border-bottom: 2px solid #2e7d32 !important;
+    color: #a5d6a7 !important;
+    border-bottom: 2px solid #43a047 !important;
 }
 
 /* ── caption ── */
 [data-testid="stCaptionContainer"] {
     font-size: 11px !important;
-    color: #a5d6a7 !important;
+    color: #66bb6a !important;
 }
 
 /* ── code ── */
 .stCode, code {
-    background: #f1f8e9 !important;
-    border: 1px solid #c8e6c9 !important;
+    background: #141c13 !important;
+    border: 1px solid #2a3a28 !important;
     border-radius: 8px !important;
-    color: #1b5e20 !important;
+    color: #a5d6a7 !important;
     font-size: 12px !important;
 }
 
 /* ── expand/collapse ── */
 [data-testid="stExpander"] {
-    border: 1px solid #e8f5e9 !important;
+    border: 1px solid #2a3a28 !important;
     border-radius: 12px !important;
-    background: #ffffff !important;
+    background: #1a2118 !important;
+}
+
+/* ── number input buttons ── */
+[data-testid="stNumberInput"] button {
+    background: #1a2118 !important;
+    border-color: #2a3a28 !important;
+    color: #a5d6a7 !important;
+}
+
+/* ── download button ── */
+[data-testid="stDownloadButton"] > button {
+    background: #1a2118 !important;
+    border: 1.5px solid #2e7d32 !important;
+    border-radius: 10px !important;
+    color: #66bb6a !important;
+    font-weight: 600 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -238,8 +282,8 @@ st.markdown("""
   <div style='background:#2e7d32;border-radius:12px;width:40px;height:40px;
               display:flex;align-items:center;justify-content:center;font-size:20px'>🎓</div>
   <div>
-    <div style='font-size:17px;font-weight:700;color:#1a2e1a;line-height:1.2'>Dropout Risk System</div>
-    <div style='font-size:11px;color:#81c784;font-weight:500'>GZU · HCS221</div>
+    <div style='font-size:17px;font-weight:700;color:#e8f0e8;line-height:1.2'>Dropout Risk System</div>
+    <div style='font-size:11px;color:#66bb6a;font-weight:500'>GZU · HCS221</div>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -278,7 +322,7 @@ with tab1:
     st.markdown("<div class='section-label'>Academic</div>", unsafe_allow_html=True)
     c5, c6 = st.columns(2)
     with c5:
-        study_hours    = st.slider("Study Hours/day", 0.0, 10.0, 3.0, 0.5)
+        study_hours     = st.slider("Study Hours/day", 0.0, 10.0, 3.0, 0.5)
         attendance_rate = st.slider("Attendance (%)", 0.0, 100.0, 75.0, 1.0)
     with c6:
         lms_logins     = st.number_input("LMS Logins/month", 0, 100, 12)
@@ -301,13 +345,13 @@ with tab1:
         proba   = model.predict_proba(X_input)[0][1]
         pred    = int(proba >= 0.5)
         tier    = "High" if proba >= 0.65 else ("Medium" if proba >= 0.4 else "Low")
-        tier_color = {"High": "#c62828", "Medium": "#e65100", "Low": "#2e7d32"}[tier]
+        tier_color = {"High": "#ef5350", "Medium": "#ffa726", "Low": "#66bb6a"}[tier]
 
         st.divider()
 
         # ── result card ──
-        bg = "#ffebee" if pred == 1 else "#e8f5e9"
-        border = "#ef9a9a" if pred == 1 else "#a5d6a7"
+        bg     = "#2a1515" if pred == 1 else "#152215"
+        border = "#c62828" if pred == 1 else "#2e7d32"
         icon   = "⚠️" if pred == 1 else "✅"
         label  = "Dropout Risk Detected" if pred == 1 else "Low Risk — Likely to Continue"
         st.markdown(f"""
@@ -316,22 +360,22 @@ with tab1:
           <div style='font-size:22px;margin-bottom:4px'>{icon}</div>
           <div style='font-size:16px;font-weight:700;color:{tier_color}'>{label}</div>
           <div style='font-size:28px;font-weight:800;color:{tier_color};margin:6px 0 2px 0'>{proba:.1%}</div>
-          <div style='font-size:11px;color:#666;font-weight:500'>dropout probability · {tier} risk</div>
+          <div style='font-size:11px;color:#a5d6a7;font-weight:500'>dropout probability · {tier} risk</div>
         </div>
         """, unsafe_allow_html=True)
 
         # ── probability bar ──
         fig, ax = plt.subplots(figsize=(5, 1.2))
-        fig.patch.set_facecolor('#ffffff')
-        ax.set_facecolor('#ffffff')
-        ax.barh(0, 1, height=0.5, color='#e8f5e9', edgecolor='#c8e6c9', linewidth=1)
-        bar_c = '#c62828' if proba >= 0.65 else ('#e65100' if proba >= 0.4 else '#2e7d32')
+        fig.patch.set_facecolor('#1a2118')
+        ax.set_facecolor('#1a2118')
+        ax.barh(0, 1, height=0.5, color='#1e2e1e', edgecolor='#2a3a28', linewidth=1)
+        bar_c = '#ef5350' if proba >= 0.65 else ('#ffa726' if proba >= 0.4 else '#43a047')
         ax.barh(0, proba, height=0.5, color=bar_c, edgecolor='none')
-        ax.axvline(0.5, color='#9e9e9e', linewidth=1, linestyle='--', alpha=0.6)
+        ax.axvline(0.5, color='#4a6a4a', linewidth=1, linestyle='--', alpha=0.7)
         ax.set_xlim(0, 1)
         ax.set_yticks([])
         ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
-        ax.set_xticklabels(['0%','25%','50%','75%','100%'], color='#9e9e9e', fontsize=8)
+        ax.set_xticklabels(['0%','25%','50%','75%','100%'], color='#66bb6a', fontsize=8)
         ax.tick_params(axis='x', length=0)
         for sp in ax.spines.values(): sp.set_visible(False)
         plt.tight_layout(pad=0.3)
@@ -356,18 +400,18 @@ with tab1:
         if part_time_job == 'Yes':    flags.append(("Working part-time", "💼"))
 
         if flags:
-            st.markdown("<div style='margin-top:10px;font-size:11px;font-weight:600;color:#81c784;text-transform:uppercase;letter-spacing:1px'>Risk Factors</div>", unsafe_allow_html=True)
+            st.markdown("<div style='margin-top:10px;font-size:11px;font-weight:600;color:#66bb6a;text-transform:uppercase;letter-spacing:1px'>Risk Factors</div>", unsafe_allow_html=True)
             cols = st.columns(2)
             for i, (flag, icon) in enumerate(flags):
                 cols[i % 2].markdown(
-                    f"<div style='background:#fff3e0;border-radius:8px;padding:6px 10px;"
-                    f"margin-bottom:6px;font-size:12px;color:#bf360c'>{icon} {flag}</div>",
+                    f"<div style='background:#2a1a0a;border-radius:8px;padding:6px 10px;"
+                    f"margin-bottom:6px;font-size:12px;color:#ffb74d'>{icon} {flag}</div>",
                     unsafe_allow_html=True
                 )
         else:
             st.markdown(
-                "<div style='background:#e8f5e9;border-radius:8px;padding:10px 14px;"
-                "font-size:13px;color:#2e7d32;margin-top:8px'>✅ No major risk factors identified</div>",
+                "<div style='background:#152215;border-radius:8px;padding:10px 14px;"
+                "font-size:13px;color:#66bb6a;margin-top:8px'>✅ No major risk factors identified</div>",
                 unsafe_allow_html=True
             )
 
@@ -384,7 +428,7 @@ with tab2:
     if uploaded:
         df_batch = pd.read_csv(uploaded)
         st.markdown(
-            f"<div style='font-size:13px;color:#2e7d32;font-weight:600;margin:6px 0'>"
+            f"<div style='font-size:13px;color:#66bb6a;font-weight:600;margin:6px 0'>"
             f"📂 {len(df_batch):,} records loaded</div>",
             unsafe_allow_html=True
         )
@@ -427,7 +471,7 @@ with tab2:
 
                 st.divider()
                 c1, c2, c3, c4 = st.columns(4)
-                c1.metric("Total",  f"{len(df_batch):,}")
+                c1.metric("Total",   f"{len(df_batch):,}")
                 c2.metric("🔴 High",  f"{n_high:,}")
                 c3.metric("🟠 Med",   f"{n_med:,}")
                 c4.metric("🟢 Low",   f"{n_low:,}")
@@ -471,9 +515,9 @@ with tab3:
     for k, v in config.items():
         st.markdown(
             f"<div style='display:flex;justify-content:space-between;align-items:center;"
-            f"padding:8px 0;border-bottom:1px solid #e8f5e9;font-size:13px'>"
-            f"<span style='color:#555'>{k}</span>"
-            f"<span style='font-weight:600;color:#2e7d32'>{v}</span></div>",
+            f"padding:8px 0;border-bottom:1px solid #2a3a28;font-size:13px'>"
+            f"<span style='color:#a5d6a7'>{k}</span>"
+            f"<span style='font-weight:600;color:#66bb6a'>{v}</span></div>",
             unsafe_allow_html=True
         )
 
@@ -499,15 +543,15 @@ with tab3:
     ]
     for fname, ftype, fdesc in feat_data:
         eng = ftype.startswith("✨")
-        tag_bg = "#e8f5e9" if eng else "#f5f5f5"
-        tag_col = "#2e7d32" if eng else "#666"
+        tag_bg  = "#1a3320" if eng else "#1e2620"
+        tag_col = "#66bb6a" if eng else "#a5d6a7"
         st.markdown(
             f"<div style='display:flex;align-items:center;gap:8px;padding:7px 0;"
-            f"border-bottom:1px solid #f0f4f0;font-size:12px'>"
-            f"<span style='font-weight:600;color:#1a2e1a;min-width:150px'>{fname}</span>"
+            f"border-bottom:1px solid #1e2620;font-size:12px'>"
+            f"<span style='font-weight:600;color:#e8f0e8;min-width:150px'>{fname}</span>"
             f"<span style='background:{tag_bg};color:{tag_col};padding:2px 7px;"
             f"border-radius:20px;font-size:10px;font-weight:600'>{ftype}</span>"
-            f"<span style='color:#888;margin-left:auto'>{fdesc}</span></div>",
+            f"<span style='color:#a5d6a7;margin-left:auto'>{fdesc}</span></div>",
             unsafe_allow_html=True
         )
 
@@ -524,7 +568,7 @@ streamlit run app_v3.py""", language="bash")
 # ── footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div style='text-align:center;padding:20px 0 8px 0;
-            font-size:11px;color:#a5d6a7;font-weight:500'>
+            font-size:11px;color:#4a7c59;font-weight:500'>
   HCS221 · Great Zimbabwe University · Dept. of Mathematics & Computer Science
 </div>
 """, unsafe_allow_html=True)
